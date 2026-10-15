@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Populos | Early Access</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/populos-mark-navy.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FAFBFB;font-family:Inter,sans-serif;color:#0D1A1F;-webkit-font-smoothing:antialiased}
+a{color:#0B2E59}
+a:hover{color:#007F96}
+input,select,button{font-family:inherit}
+input::placeholder{color:#8396A0}
+input:focus,select:focus{outline:none;border-color:#00B8D9 !important;box-shadow:0 0 0 3px rgba(0,184,217,0.18)}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column">
+  <header style="padding:20px 24px;border-bottom:1px solid #DDE4E6;background:#FFFFFF">
+    <div style="max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px">
+      <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+        <img src="assets/populos-mark-navy.png" alt="" width="28" height="25" style="display:block">
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.02em;color:#0B2E59">Populos</span>
+      </a>
+    </div>
+  </header>
+
+  <main style="flex:1;padding:clamp(32px,6vw,72px) 20px">
+    <div style="max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:20px">
+      <sc-if value="{{ showProgress }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#007F96"><span>EARLY ACCESS</span><span>{{ stepLabel }}</span></div>
+          <div style="height:4px;border-radius:999px;background:#E3EAEC;overflow:hidden"><div style="height:100%;border-radius:999px;background:linear-gradient(90deg,#0B2E59,#00B8D9);transition:width .35s ease;width:{{ progress }}"></div></div>
+        </div>
+      </sc-if>
+
+      <div style="background:#FFFFFF;border:1px solid #DDE4E6;border-radius:14px;padding:clamp(24px,5vw,40px);box-shadow:0 1px 2px rgba(13,26,31,0.04),0 16px 40px -20px rgba(11,46,89,0.16)">
+
+        <sc-if value="{{ isRole }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <h1 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,4vw,32px);font-weight:700;letter-spacing:-0.02em;line-height:1.15;color:#0B2E59;text-wrap:pretty">Welcome! Let's customize your Populos package.</h1>
+              <p style="margin:0;font-size:15px;line-height:1.6;color:#3E5057">A few quick questions so we can tailor the pilot to you.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-size:15px;font-weight:600;color:#0D1A1F">Which best describes you? <span style="color:#007F96">*</span></span>
+              <sc-for list="{{ roles }}" as="r" hint-placeholder-count="3">
+                <button type="button" onClick="{{ r.pick }}" style="display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;padding:16px 18px;border-radius:10px;font-size:16px;font-weight:500;color:#0D1A1F;border:1.5px solid {{ r.border }};background:{{ r.bg }}" style-hover="border-color:#00B8D9">
+                  <span style="flex:0 0 18px;height:18px;border-radius:50%;box-sizing:border-box;border:{{ r.dot }}"></span>
+                  <span style="display:flex;flex-direction:column;gap:2px"><span>{{ r.label }}</span><span style="font-size:13px;font-weight:400;color:#55666C">{{ r.sub }}</span></span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isGeneral }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;letter-spacing:-0.02em;color:#0B2E59">Your details</h2>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">Company name <span style="display:none"></span>
+              <input value="{{ f.company }}" onChange="{{ h.company }}" autocomplete="organization" style="padding:13px 14px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">Work email
+              <input type="email" value="{{ f.email }}" onChange="{{ h.email }}" autocomplete="email" placeholder="name@company.com" style="padding:13px 14px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">Phone
+              <div style="display:flex;gap:8px">
+                <select value="{{ f.dial }}" onChange="{{ h.dial }}" style="flex:0 0 auto;padding:13px 10px;border:1px solid #C9D3D6;border-radius:8px;font-size:15px;color:#0D1A1F;background:#FFFFFF">
+                  <option value="+233">GH +233</option>
+                  <option value="+234">NG +234</option>
+                  <option value="+225">CI +225</option>
+                  <option value="+254">KE +254</option>
+                  <option value="+27">ZA +27</option>
+                  <option value="+44">UK +44</option>
+                  <option value="+1">US +1</option>
+                </select>
+                <input type="tel" value="{{ f.phone }}" onChange="{{ h.phone }}" autocomplete="tel-national" placeholder="55 000 0000" style="flex:1;min-width:0;padding:13px 14px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+              </div>
+            </label>
+            <span style="font-size:13px;color:#55666C">All fields required.</span>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isBrand }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;letter-spacing:-0.02em;color:#0B2E59">Your campaigns</h2>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">How many sub-brands do you currently have?
+              <input type="number" min="0" value="{{ f.subBrands }}" onChange="{{ h.subBrands }}" style="padding:13px 14px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">How do you currently verify OOH campaign delivery?
+              <select value="{{ f.verify }}" onChange="{{ h.verify }}" style="padding:13px 12px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+                <option value="">Select an option</option>
+                <sc-for list="{{ opts.verify }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">Biggest OOH measurement pain point
+              <select value="{{ f.pain }}" onChange="{{ h.pain }}" style="padding:13px 12px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+                <option value="">Select an option</option>
+                <sc-for list="{{ opts.pain }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </label>
+            <sc-if value="{{ painIsOther }}" hint-placeholder-val="{{ false }}">
+              <input value="{{ f.painOther }}" onChange="{{ h.painOther }}" placeholder="Tell us your biggest pain point" style="padding:13px 14px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;color:#0D1A1F;background:#FFFFFF">
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isAgency }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;letter-spacing:-0.02em;color:#0B2E59">Your agency</h2>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">Number of OOH client accounts your agency runs
+              <input type="number" min="0" value="{{ f.clients }}" onChange="{{ h.clients }}" style="padding:13px 14px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">Approximate number of boards typically managed across clients
+              <select value="{{ f.agencyBoards }}" onChange="{{ h.agencyBoards }}" style="padding:13px 12px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+                <option value="">Select an option</option>
+                <sc-for list="{{ opts.boards }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">Do you currently receive impression/reach estimates from media owners?
+              <select value="{{ f.estimates }}" onChange="{{ h.estimates }}" style="padding:13px 12px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+                <option value="">Select an option</option>
+                <sc-for list="{{ opts.estimates }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </label>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isOwner }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;letter-spacing:-0.02em;color:#0B2E59">Your inventory</h2>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">Estimated number of board locations
+              <select value="{{ f.locations }}" onChange="{{ h.locations }}" style="padding:13px 12px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+                <option value="">Select an option</option>
+                <sc-for list="{{ opts.boards }}" as="o" hint-placeholder-count="4"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:600">Do you currently conduct audience measurement on your boards?
+              <select value="{{ f.measure }}" onChange="{{ h.measure }}" style="padding:13px 12px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;font-weight:400;color:#0D1A1F;background:#FFFFFF">
+                <option value="">Select an option</option>
+                <sc-for list="{{ opts.measure }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for>
+              </select>
+            </label>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="font-size:15px;font-weight:600">What's driving your interest right now?</span>
+              <sc-for list="{{ drivers }}" as="d" hint-placeholder-count="3">
+                <button type="button" onClick="{{ d.toggle }}" style="display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;padding:12px 14px;border-radius:8px;font-size:15px;color:#0D1A1F;border:1px solid {{ d.border }};background:{{ d.bg }}" style-hover="border-color:#00B8D9">
+                  <span style="flex:0 0 18px;height:18px;border-radius:4px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-size:12px;font-weight:700;border:1.5px solid {{ d.boxBorder }};background:{{ d.boxBg }}">{{ d.tick }}</span>
+                  <span>{{ d.label }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isClosing }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;letter-spacing:-0.02em;color:#0B2E59">Almost done</h2>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:15px;font-weight:600">Best time to reach out to you</span>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px">
+                <select aria-label="Day" value="{{ f.day }}" onChange="{{ h.day }}" style="padding:13px 12px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;color:#0D1A1F;background:#FFFFFF">
+                  <option value="">Select a day</option>
+                  <sc-for list="{{ opts.days }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+                <select aria-label="Time" value="{{ f.band }}" onChange="{{ h.band }}" style="padding:13px 12px;border:1px solid #C9D3D6;border-radius:8px;font-size:16px;color:#0D1A1F;background:#FFFFFF">
+                  <option value="">Select a time</option>
+                  <sc-for list="{{ opts.bands }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:12px 0">
+            <span style="width:56px;height:56px;border-radius:50%;background:#E6F8FB;color:#007F96;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700">✓</span>
+            <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:700;letter-spacing:-0.02em;color:#0B2E59">Thank you!</h2>
+            <p style="margin:0;max-width:420px;font-size:16px;line-height:1.6;color:#3E5057;text-wrap:pretty">We'll be in touch soon. Feel free to download the Populos Profile Document here.</p>
+            <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:10px">
+              <a href="https://drive.google.com/file/d/1Q3L83UqLZ2qzGkKS8pDIuC_tSiTNUfOK/view?usp=sharing" target="_blank" rel="noopener noreferrer" style="background:#0B2E59;color:#FFFFFF;font-weight:600;font-size:15px;padding:14px 22px;border-radius:8px;text-decoration:none" style-hover="background:#123F75;color:#FFFFFF">Download Profile Document</a>
+              <a href="index.html" style="border:1.5px solid #C9D3D6;color:#0D1A1F;font-weight:600;font-size:15px;padding:13px 22px;border-radius:8px;text-decoration:none;background:#FFFFFF" style-hover="border-color:#0B2E59;color:#0D1A1F">Back to site</a>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ error }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:20px;padding:12px 14px;border-radius:8px;background:#FEF3F2;border:1px solid #FECDCA;color:#B42318;font-size:14px">{{ error }}</div>
+        </sc-if>
+
+        <sc-if value="{{ showNav }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:28px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <sc-if value="{{ canBack }}" hint-placeholder-val="{{ false }}">
+              <button type="button" onClick="{{ back }}" style="border:0;background:none;cursor:pointer;color:#3E5057;font-size:15px;font-weight:600;padding:12px 0" style-hover="color:#0B2E59">← Back</button>
+            </sc-if>
+            <span style="flex:1"></span>
+            <button type="button" onClick="{{ next }}" disabled="{{ busy }}" style="border:0;cursor:pointer;background:#0B2E59;color:#FFFFFF;font-weight:600;font-size:16px;padding:14px 26px;border-radius:8px" style-hover="background:#123F75">{{ nextLabel }}</button>
+          </div>
+        </sc-if>
+      </div>
+      <span style="text-align:center;font-size:13px;color:#55666C">Questions? <a href="mailto:hello@populosdata.com" style="color:#0B2E59">hello@populosdata.com</a></span>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;formEndpoint&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Google Sheets&quot;}}">
+// Paste your Apps Script web app URL here (same one as the landing page).
+const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwBZGrTBz0PDxgjdh4vvFaM0DUWWVOQgegrMibXCm84eWvON7sChod1LJEd01DCCC1l/exec';
+const PATHS = { brand: ['role', 'general', 'brand', 'closing'], agency: ['role', 'general', 'agency', 'closing'], owner: ['role', 'general', 'owner', 'closing'] };
+const ROLES = [
+  { id: 'brand', label: 'Brand Marketing Team', sub: 'You buy OOH for your own brands' },
+  { id: 'agency', label: 'Media Agency', sub: 'You plan and buy OOH for clients' },
+  { id: 'owner', label: 'Media Owner', sub: 'You own or sell billboard inventory' }
+];
+const ROLE_NAMES = { brand: 'Brand Marketing Team', agency: 'Media Agency', owner: 'Media Owner' };
+const OPTS = {
+  verify: ['Photos or reports from the media owner', 'Agency reports', 'Our own field checks', "We don't verify today"],
+  pain: ['No independent audience data', "Can't prove OOH ROI", 'Unverified board delivery', 'Hard to compare boards and owners', 'Slow, manual reporting', 'Other'],
+  days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+  bands: ['9am - 12pm', '1pm - 3pm', '3pm - 5pm'],
+  boards: ['Under 25', '25-100', '100-500', '500+'],
+  estimates: ['Yes, for most boards', 'Sometimes', 'No, never'],
+  measure: ['Yes, independently verified', 'Yes, our own estimates', 'No, not yet']
+};
+const DRIVERS = ['Competing for larger brand budgets', 'Agency or brand asked for verified data', 'Want to differentiate vs. other owners'];
+const FIELDS = ['company', 'email', 'dial', 'phone', 'subBrands', 'verify', 'pain', 'clients', 'agencyBoards', 'estimates', 'locations', 'measure', 'painOther', 'day', 'band'];
+
+class Component extends DCLogic {
+  state = { step: 'role', role: '', drivers: [], error: '', busy: false,
+    f: { company: '', email: '', dial: '+233', phone: '', subBrands: '', verify: '', pain: '', clients: '', agencyBoards: '', estimates: '', locations: '', measure: '', painOther: '', day: '', band: '' } };
+  h = Object.fromEntries(FIELDS.map(k => [k, e => { const v = e.target.value; this.setState(s => ({ f: { ...s.f, [k]: v }, error: '' })); }]));
+  componentDidMount() {
+    const q = new URLSearchParams(location.search);
+    const email = q.get('email'), role = q.get('role');
+    if (email) this.setState(s => ({ f: { ...s.f, email } }));
+    if (role && PATHS[role]) this.setState({ role });
+  }
+  path() { return PATHS[this.state.role] || PATHS.brand; }
+  validate() {
+    const { step, role, f } = this.state;
+    if (step === 'role' && !role) return 'Please choose the option that best describes you.';
+    if (step === 'general') {
+      if (!f.company.trim() || !f.email.trim() || !f.phone.trim()) return 'Please complete all fields.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) return 'Please enter a valid work email.';
+      if (f.phone.replace(/\D/g, '').length < 7) return 'Please enter a valid phone number.';
+    }
+    return '';
+  }
+  next = async () => {
+    const err = this.validate(); if (err) return this.setState({ error: err });
+    const p = this.path(), i = p.indexOf(this.state.step);
+    if (i < p.length - 1) return this.setState({ step: p[i + 1], error: '' }, () => window.scrollTo(0, 0));
+    await this.submit();
+  };
+  back = () => { const p = this.path(), i = p.indexOf(this.state.step); if (i > 0) this.setState({ step: p[i - 1], error: '' }); };
+  async submit() {
+    const { role, f, drivers } = this.state;
+    const data = { type: 'application', submittedAt: new Date().toISOString(), role: ROLE_NAMES[role], company: f.company.trim(), email: f.email.trim(), phone: f.dial + ' ' + f.phone.trim(), bestTime: [f.day, f.band].filter(Boolean).join(', '), page: location.href };
+    if (role === 'brand') Object.assign(data, { subBrands: f.subBrands, verify: f.verify, pain: f.pain === 'Other' && f.painOther.trim() ? 'Other: ' + f.painOther.trim() : f.pain });
+    if (role === 'agency') Object.assign(data, { clients: f.clients, agencyBoards: f.agencyBoards, estimates: f.estimates });
+    if (role === 'owner') Object.assign(data, { locations: f.locations, measure: f.measure, drivers: drivers.join('; ') });
+    const endpoint = this.props.formEndpoint || FORM_ENDPOINT;
+    if (!endpoint) { console.warn('FORM_ENDPOINT not set; submission not saved', data); return this.setState({ step: 'done' }); }
+    this.setState({ busy: true });
+    try {
+      await fetch(endpoint, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(data) });
+      this.setState({ step: 'done', busy: false });
+    } catch (e) {
+      this.setState({ busy: false, error: "Couldn't send that. Please try again or email hello@populosdata.com." });
+    }
+  }
+  renderVals() {
+    const { step, role, f, drivers, error, busy } = this.state;
+    const p = this.path(), i = p.indexOf(step), last = i === p.length - 1;
+    return {
+      f, h: this.h, opts: OPTS, error, busy, painIsOther: f.pain === 'Other',
+      isRole: step === 'role', isGeneral: step === 'general', isBrand: step === 'brand', isAgency: step === 'agency', isOwner: step === 'owner', isClosing: step === 'closing', isDone: step === 'done',
+      showProgress: step !== 'done', showNav: step !== 'done', canBack: i > 0,
+      stepLabel: 'STEP ' + (i + 1) + ' OF ' + p.length,
+      progress: ((i + 1) / p.length * 100) + '%',
+      nextLabel: busy ? 'Sending…' : last ? 'Submit' : 'Next →',
+      back: this.back, next: this.next,
+      roles: ROLES.map(r => { const on = r.id === role; return { ...r, border: on ? '#0B2E59' : '#DDE4E6', bg: on ? '#F2FBFD' : '#FFFFFF', dot: on ? '5px solid #0B2E59' : '1.5px solid #C9D3D6', pick: () => this.setState({ role: r.id, error: '' }) }; }),
+      drivers: DRIVERS.map(label => { const on = drivers.includes(label); return { label, tick: on ? '✓' : '', border: on ? '#0B2E59' : '#DDE4E6', bg: on ? '#F2FBFD' : '#FFFFFF', boxBorder: on ? '#0B2E59' : '#C9D3D6', boxBg: on ? '#0B2E59' : '#FFFFFF',
+        toggle: () => this.setState(s => ({ drivers: s.drivers.includes(label) ? s.drivers.filter(x => x !== label) : [...s.drivers, label] })) }; })
+    };
+  }
+}
+</script>
+</body>
+</html>

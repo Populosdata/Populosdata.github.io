@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Populos | The OOH Intelligence Platform</title>
+<meta name="description" content="Ghana's first independent OOH audience measurement platform. Verify, measure and optimize outdoor advertising with global-standard data.">
+<link rel="icon" href="assets/populos-mark-navy.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth;background:#FAFBFB}
+body{margin:0;background:#FAFBFB;color:#0D1A1F;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#007F96;text-decoration:none}
+a:hover{color:#0B2E59}
+input::placeholder{color:#8396A0}
+::selection{background:#00B8D9;color:#0D1A1F}
+@keyframes pl-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes pl-mark{0%{opacity:0;transform:scale(.4) rotate(-200deg)}65%{opacity:1;transform:scale(1.08) rotate(8deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes pl-breathe{0%,100%{transform:scale(1);filter:brightness(0) invert(1) drop-shadow(0 0 0 rgba(127,227,245,0))}50%{transform:scale(1.07);filter:brightness(0) invert(1) drop-shadow(0 0 5px rgba(127,227,245,.3))}}
+@keyframes pl-word{0%{opacity:0;clip-path:inset(0 100% 0 0);transform:translateX(-12px)}100%{opacity:1;clip-path:inset(0 0 0 0);transform:translateX(0)}}
+@keyframes pl-fade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important}}
+</style>
+</helmet>
+
+<div style="position:relative;min-height:100vh;overflow-x:hidden;background:#FAFBFB">
+<sc-if value="{{ splashVisible }}" hint-placeholder-val="{{ false }}">
+  <div role="status" aria-label="Loading Populos" style="position:fixed;inset:0;z-index:200;background:#0B2E59;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;padding:24px;transition:opacity .5s ease;opacity:{{ splashOpacity }}">
+    <div style="display:flex;align-items:center;gap:clamp(12px,2vw,20px);width:min(440px,80vw)">
+      <img src="assets/splash-mark.png" alt="" style="width:26%;height:auto;display:block;filter:brightness(0) invert(1);animation:pl-mark 1s cubic-bezier(.2,.8,.2,1) both,pl-breathe 1.4s ease-in-out 1s infinite">
+      <img src="assets/splash-wordmark.png" alt="Populos, The OOH Intelligence Platform" style="width:70%;height:auto;display:block;filter:brightness(0) invert(1);animation:pl-word .8s cubic-bezier(.3,.7,.2,1) .45s both">
+    </div>
+    <div style="width:min(240px,60vw);height:3px;border-radius:999px;background:rgba(255,255,255,0.14);overflow:hidden;animation:pl-fade .4s ease .2s both">
+      <div style="height:100%;border-radius:999px;background:linear-gradient(90deg,#FFFFFF,#7FE3F5);box-shadow:0 0 12px rgba(127,227,245,0.6);width:{{ splashPct }}"></div>
+    </div>
+  </div>
+</sc-if>
+
+<header style="position:sticky;top:0;z-index:50;background:rgba(250,251,251,0.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #DDE4E6">
+  <nav style="max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <a href="#top" style="display:flex;align-items:center;gap:12px;color:#0B2E59;flex-shrink:0">
+      <img src="assets/populos-mark-navy.png" alt="" style="width:32px;height:auto;display:block">
+      <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:21px;letter-spacing:-0.02em;color:#0B2E59">Populos</span>
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <span style="font-size:11px;color:#55666C;border:1px solid #DDE4E6;padding:3px 9px;border-radius:999px;white-space:nowrap">The OOH Intelligence Platform</span>
+      </sc-if>
+    </a>
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:28px;flex-shrink:0">
+        <div style="display:flex;gap:24px;font-size:14px;font-weight:500;white-space:nowrap">
+          <a href="#features" style="color:#2E4148" style-hover="color:#0B2E59">Features</a>
+          <a href="#product" style="color:#2E4148" style-hover="color:#0B2E59">Dashboard</a>
+          <a href="#pricing" style="color:#2E4148" style-hover="color:#0B2E59">Pricing</a>
+          <a href="#contact" style="color:#2E4148" style-hover="color:#0B2E59">Contact</a>
+        </div>
+        <a href="early-access.html" style="flex-shrink:0;white-space:nowrap;background:#0B2E59;color:#FFFFFF;font-weight:600;font-size:14px;padding:11px 18px;border-radius:8px" style-hover="background:#123F78;color:#FFFFFF">Early Bird access</a>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ toggleMenu }}" aria-label="Menu" style="background:#FFFFFF;border:1px solid #DDE4E6;color:#0D1A1F;border-radius:8px;padding:10px 14px;font:500 14px 'Inter',sans-serif;cursor:pointer">{{ menuLabel }}</button>
+    </sc-if>
+  </nav>
+  <sc-if value="{{ menuVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:2px;padding:8px 24px 20px;border-top:1px solid #DDE4E6;background:#FAFBFB">
+      <a href="#features" onClick="{{ closeMenu }}" style="color:#0D1A1F;padding:12px 0;font-size:16px">Features</a>
+      <a href="#product" onClick="{{ closeMenu }}" style="color:#0D1A1F;padding:12px 0;font-size:16px">Dashboard</a>
+      <a href="#pricing" onClick="{{ closeMenu }}" style="color:#0D1A1F;padding:12px 0;font-size:16px">Pricing</a>
+      <a href="#contact" onClick="{{ closeMenu }}" style="color:#0D1A1F;padding:12px 0;font-size:16px">Contact</a>
+      <a href="early-access.html" style="margin-top:8px;text-align:center;background:#0B2E59;color:#FFFFFF;font-weight:600;padding:14px;border-radius:8px">Early Bird access</a>
+    </div>
+  </sc-if>
+</header>
+
+<section id="top" style="position:relative;padding:clamp(56px,8vw,104px) 24px clamp(56px,7vw,88px)">
+  <div style="max-width:1200px;margin:0 auto;text-align:center">
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px">
+      <span style="width:32px;height:2px;background:#00B8D9"></span>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.06em;color:#007F96">GHANA'S OOH MEASUREMENT PLATFORM</span>
+      <span style="width:32px;height:2px;background:#00B8D9"></span>
+    </div>
+    <h1 style="margin:28px auto 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(46px,8.4vw,116px);line-height:0.98;letter-spacing:-0.045em;color:#0D1A1F;max-width:1180px">Verify. <span style="position:relative;display:inline-block">Measure.<span style="position:absolute;left:0;right:0.12em;bottom:0.06em;height:0.07em;min-height:4px;background:#00B8D9"></span></span> Optimize<br><span style="color:#0B2E59">Outdoor Advertising.</span></h1>
+
+    <div style="margin-top:clamp(36px,4.5vw,56px);display:flex;flex-direction:column;align-items:center;gap:clamp(40px,5vw,56px)">
+      <div style="max-width:600px;width:100%">
+        <p style="margin:0;font-size:18px;line-height:1.6;color:#3E5057;text-wrap:pretty">Ghana’s first independent OOH audience measurement platform. Field verification, board-level traffic, and measurement calibrated with census, mobile and mobility data, built on global standards for decision-grade analytics.</p>
+        <sc-if value="{{ heroOpen }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ submitHero }}" style="margin-top:28px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px">
+            <input type="email" required="" value="{{ heroEmail }}" onChange="{{ setHeroEmail }}" placeholder="Work email" aria-label="Work email" style="flex:1 1 240px;min-width:0;height:52px;padding:0 16px;border-radius:8px;border:1px solid #C9D3D6;background:#FFFFFF;color:#0D1A1F;font:400 16px 'Inter',sans-serif;outline:none" style-focus="border-color:#00B8D9;box-shadow:0 0 0 3px rgba(0,184,217,0.18)">
+            <button type="submit" disabled="{{ heroBusy }}" style="height:52px;padding:0 22px;border-radius:8px;border:0;background:#0B2E59;color:#FFFFFF;font:600 15px 'Inter',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:10px;white-space:nowrap" style-hover="background:#123F78">Join the early access list <span aria-hidden="true">→</span></button>
+          </form>
+          <div style="margin-top:12px;font-size:13px;color:#55666C">Lock in your early-bird rate before pricing increases. No commitment.</div>
+        </sc-if>
+        <sc-if value="{{ heroDone }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:28px;padding:16px 18px;border-radius:8px;background:#E6F8FB;border:1px solid #A8E6F1;color:#0B4B5A;font-size:15px;line-height:1.5">You're on the list. We'll be in touch before the pilot opens in Accra, Kumasi and Takoradi. <a href="early-access.html" style="color:#0B2E59;font-weight:600">Tell us more about your team →</a></div>
+        </sc-if>
+        <sc-if value="{{ heroError }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:10px;font-size:13px;color:#B42318">Couldn't save that. Please try again or email <a href="mailto:hello@populosdata.com" style="color:#B42318;text-decoration:underline">hello@populosdata.com</a>.</div>
+        </sc-if>
+      </div>
+
+      <div style="width:100%;max-width:720px;text-align:left;background:#FFFFFF;border:1px solid #DDE4E6;border-radius:12px;box-shadow:0 1px 2px rgba(13,26,31,0.04),0 12px 32px -12px rgba(11,46,89,0.12)">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid #EDF1F2">
+          <span style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#55666C"><span style="width:7px;height:7px;border-radius:50%;background:#00B8D9;animation:pl-pulse 1.6s ease-in-out infinite"></span>LIVE · ACCRA · KUMASI · TAKORADI</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8396A0">v0.9 pilot</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr))">
+          <div style="padding:20px 18px;border-right:1px solid #EDF1F2">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(28px,3.4vw,40px);letter-spacing:-0.03em;font-variant-numeric:tabular-nums;color:#0D1A1F">{{ boardsCount }}<span style="color:#00B8D9">+</span></div>
+            <div style="margin-top:6px;font-size:12px;color:#55666C">Boards tracked</div>
+          </div>
+          <div style="padding:20px 18px;border-right:1px solid #EDF1F2">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(28px,3.4vw,40px);letter-spacing:-0.03em;font-variant-numeric:tabular-nums;color:#0D1A1F">{{ corridorsCount }}<span style="color:#00B8D9">+</span></div>
+            <div style="margin-top:6px;font-size:12px;color:#55666C">Road corridors</div>
+          </div>
+          <div style="padding:20px 18px">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(28px,3.4vw,40px);letter-spacing:-0.03em;color:#0D1A1F">Q1<span style="color:#00B8D9"> '27</span></div>
+            <div style="margin-top:6px;font-size:12px;color:#55666C">Pilot launch</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin:48px auto 0;max-width:760px;font-size:14px;line-height:1.65;color:#55666C;padding-top:24px;border-top:1px solid #DDE4E6">Populos is a subscription-based product of <span style="color:#0D1A1F;font-weight:500">E Brandistry</span>, a marketing and research company. Purpose-built for the Ghana OOH landscape.</p>
+  </div>
+</section>
+
+<section id="product" style="padding:0 24px;scroll-margin-top:80px">
+  <div style="max-width:1200px;margin:0 auto;border-radius:14px;border:1px solid #DDE4E6;background:#FFFFFF;overflow:hidden;box-shadow:0 30px 80px -40px rgba(11,46,89,0.35)">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 20px;border-bottom:1px solid #EDF1F2;background:#F6F8F8">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0">
+        <img src="assets/populos-mark-navy.png" alt="" style="width:20px;height:auto">
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#0B2E59">Populos</span>
+        <span style="font-size:12px;color:#55666C;padding-left:10px;border-left:1px solid #DDE4E6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Campaign · Q1 Pilot Launch</span>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#55666C;border:1px solid #DDE4E6;border-radius:999px;padding:4px 10px;white-space:nowrap">SAMPLE DATA</span>
+    </div>
+    <div style="display:flex">
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <aside style="flex:0 0 196px;padding:18px 12px;border-right:1px solid #EDF1F2;display:flex;flex-direction:column;gap:2px;font-size:13px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;color:#8396A0;padding:0 10px 8px">WORKSPACE</span>
+          <span style="padding:9px 10px;border-radius:6px;background:#E6F8FB;color:#0B2E59;font-weight:600">Overview</span>
+          <span style="padding:9px 10px;color:#3E5057">Campaigns</span>
+          <span style="padding:9px 10px;color:#3E5057">Boards</span>
+          <span style="padding:9px 10px;color:#3E5057">Audience &amp; SEC%</span>
+          <span style="padding:9px 10px;color:#3E5057">Category intel</span>
+          <span style="padding:9px 10px;color:#3E5057">AI Planner</span>
+          <span style="padding:9px 10px;color:#3E5057">Reports</span>
+        </aside>
+      </sc-if>
+      <div style="flex:1;min-width:0;padding:20px;display:flex;flex-direction:column;gap:14px;background:#FAFBFB">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+          <div style="background:#0B2E59;border-radius:10px;padding:16px;color:#FFFFFF">
+            <div style="font-size:12px;color:#C5D3E6">Impressions (OTS)</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:28px;letter-spacing:-0.02em;margin-top:6px">4.82M</div>
+            <div style="font-size:11px;margin-top:4px;color:#7FE3F5">▲ 12.4% vs last month</div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #DDE4E6;border-radius:10px;padding:16px">
+            <div style="font-size:12px;color:#55666C">Net reach</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:28px;letter-spacing:-0.02em;margin-top:6px">1.36M</div>
+            <div style="font-size:11px;margin-top:4px;color:#55666C">Avg. frequency 3.5</div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #DDE4E6;border-radius:10px;padding:16px">
+            <div style="font-size:12px;color:#55666C">GRPs delivered</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:28px;letter-spacing:-0.02em;margin-top:6px">286</div>
+            <div style="font-size:11px;margin-top:4px;color:#55666C">Target 300</div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #DDE4E6;border-radius:10px;padding:16px">
+            <div style="font-size:12px;color:#55666C">Board health</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:28px;letter-spacing:-0.02em;margin-top:6px">96%</div>
+            <div style="font-size:11px;margin-top:4px;color:#B54708">2 boards need attention</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:12px">
+          <div style="background:#FFFFFF;border:1px solid #DDE4E6;border-radius:10px;padding:16px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#55666C"><span style="color:#0D1A1F;font-weight:600">Weekly impressions</span><span>12 weeks</span></div>
+            <div style="height:140px;margin-top:16px;display:flex;align-items:flex-end;gap:6px;border-bottom:1px solid #DDE4E6">
+              <div style="flex:1;height:38%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:44%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:41%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:52%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:58%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:55%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:63%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:70%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:66%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:78%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:84%;background:#BFEFF7;border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:96%;background:#00B8D9;border-radius:3px 3px 0 0"></div>
+            </div>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #DDE4E6;border-radius:10px;padding:16px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#55666C"><span style="color:#0D1A1F;font-weight:600">Audience SEC% split</span><span>All boards</span></div>
+            <div style="display:flex;height:12px;border-radius:999px;overflow:hidden;margin-top:20px">
+              <div style="width:18%;background:#0B2E59"></div>
+              <div style="width:31%;background:#2F6CA8"></div>
+              <div style="width:34%;background:#00B8D9"></div>
+              <div style="width:17%;background:#C9D3D6"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;font-size:12px;color:#3E5057">
+              <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:2px;background:#0B2E59"></span>SEC A · 18%</span>
+              <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:2px;background:#2F6CA8"></span>SEC B · 31%</span>
+              <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:2px;background:#00B8D9"></span>SEC C1 · 34%</span>
+              <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:2px;background:#C9D3D6"></span>SEC C2/D · 17%</span>
+            </div>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #DDE4E6;border-radius:10px;overflow-x:auto">
+          <div style="min-width:560px;font-size:13px;color:#0D1A1F">
+            <div style="display:grid;grid-template-columns:90px 2fr 1fr 1fr 110px;gap:12px;padding:11px 16px;color:#8396A0;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;border-bottom:1px solid #EDF1F2">
+              <span>BOARD</span><span>LOCATION</span><span>OTS / WEEK</span><span>SEC A/B</span><span>STATUS</span>
+            </div>
+            <div style="display:grid;grid-template-columns:90px 2fr 1fr 1fr 110px;gap:12px;padding:12px 16px;border-bottom:1px solid #EDF1F2">
+              <span style="color:#55666C;font-family:'JetBrains Mono',monospace;font-size:12px">ACC-0142</span><span>Tetteh Quarshie Interchange</span><span>412,800</span><span>54%</span><span style="color:#067647">● Verified</span>
+            </div>
+            <div style="display:grid;grid-template-columns:90px 2fr 1fr 1fr 110px;gap:12px;padding:12px 16px;border-bottom:1px solid #EDF1F2">
+              <span style="color:#55666C;font-family:'JetBrains Mono',monospace;font-size:12px">ACC-0087</span><span>Liberation Rd, Airport</span><span>298,350</span><span>61%</span><span style="color:#067647">● Verified</span>
+            </div>
+            <div style="display:grid;grid-template-columns:90px 2fr 1fr 1fr 110px;gap:12px;padding:12px 16px">
+              <span style="color:#55666C;font-family:'JetBrains Mono',monospace;font-size:12px">ACC-0219</span><span>Spintex Rd, Coca-Cola Roundabout</span><span>265,100</span><span>43%</span><span style="color:#B54708">● Damaged</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="standards" style="padding:48px 24px 0">
+  <div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px;padding-bottom:40px;border-bottom:1px solid #DDE4E6">
+    <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.06em;color:#3E5057">BUILT TO GLOBAL OOH MEASUREMENT STANDARDS</span>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(20px,5vw,56px);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(18px,2vw,24px);color:#55666C;letter-spacing:-0.01em">
+      <span>ROUTE <span style="font-size:12px;font-weight:500;color:#8396A0">UK</span></span>
+      <span>Geopath <span style="font-size:12px;font-weight:500;color:#8396A0">US</span></span>
+      <span>WOO</span>
+      <span>ESOMAR</span>
+    </div>
+  </div>
+</section>
+
+<section id="features" style="padding:clamp(72px,10vw,128px) 24px clamp(64px,8vw,104px);scroll-margin-top:80px">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px;max-width:760px;margin:0 auto">
+      <div>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.06em;color:#007F96">THE PLATFORM</span>
+        <h2 style="margin:16px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(34px,4.6vw,56px);line-height:1.04;letter-spacing:-0.035em;text-wrap:balance">Your OOH campaigns, finally measurable.</h2>
+      </div>
+      <p style="margin:0;max-width:600px;font-size:17px;line-height:1.6;color:#3E5057;text-wrap:pretty">Outdoor advertising remains one of the most visible, yet least accountable media channels. Six capabilities, one measurement currency, adapted for the Ghanaian city, its trotros, pedestrian corridors and audience reality.</p>
+    </div>
+    <div style="margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:1px;background:#DDE4E6;border:1px solid #DDE4E6;border-radius:12px;overflow:hidden">
+      <div style="background:#FFFFFF;padding:32px 30px 36px" style-hover="background:#F3FBFD">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="width:4px;height:18px;background:#00B8D9"></span><span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#007F96">01</span></div>
+        <h3 style="margin:24px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:21px;letter-spacing:-0.02em">Audience Measurement</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.6;color:#3E5057;text-wrap:pretty">No more guessing how many people see your boards. OTS, Reach, GRPs and frequency, measured to global standards and built for Ghana's traffic patterns and audiences.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px 30px 36px" style-hover="background:#F3FBFD">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="width:4px;height:18px;background:#00B8D9"></span><span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#007F96">02</span></div>
+        <h3 style="margin:24px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:21px;letter-spacing:-0.02em">Live Monitoring</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.6;color:#3E5057;text-wrap:pretty">Theft, weather and time take their toll on billboards. Field teams verify board condition and creative compliance, so you always know what state your investment is in.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px 30px 36px" style-hover="background:#F3FBFD">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="width:4px;height:18px;background:#00B8D9"></span><span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#007F96">03</span></div>
+        <h3 style="margin:24px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:21px;letter-spacing:-0.02em">SEC% Audience Profiling</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.6;color:#3E5057;text-wrap:pretty">Socio-economic classification layered onto every board's audience: not just how many people pass a board, but who they are.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px 30px 36px" style-hover="background:#F3FBFD">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="width:4px;height:18px;background:#00B8D9"></span><span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#007F96">04</span></div>
+        <h3 style="margin:24px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:21px;letter-spacing:-0.02em">Real-Time Dashboards &amp; Reporting</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.6;color:#3E5057;text-wrap:pretty">Manage every campaign the moment it's live. A dedicated dashboard tracks board health and performance, with monthly and post-campaign reporting.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px 30px 36px" style-hover="background:#F3FBFD">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="width:4px;height:18px;background:#00B8D9"></span><span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#007F96">05</span></div>
+        <h3 style="margin:24px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:21px;letter-spacing:-0.02em">Industry &amp; Category Intelligence</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.6;color:#3E5057;text-wrap:pretty">See how brand categories invest in OOH. Track Share of Presence, board-level exposure comparisons and category concentration across the market.</p>
+      </div>
+      <div style="background:#FFFFFF;padding:32px 30px 36px" style-hover="background:#F3FBFD">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="width:4px;height:18px;background:#00B8D9"></span><span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#007F96">06</span></div>
+        <h3 style="margin:24px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:21px;letter-spacing:-0.02em">AI-enabled Campaign Planning</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.6;color:#3E5057;text-wrap:pretty">The Populos AI Planner weighs reach, budget and board performance across hundreds of boards to recommend the optimal combination.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" style="padding:clamp(72px,9vw,120px) 24px;background:#F1F4F5;border-top:1px solid #DDE4E6;border-bottom:1px solid #DDE4E6;scroll-margin-top:60px">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px;max-width:760px;margin:0 auto">
+      <div>
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.06em;color:#007F96">WHO IT'S FOR</span>
+        <h2 style="margin:16px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(34px,4.6vw,56px);line-height:1.04;letter-spacing:-0.035em;text-wrap:balance">Built for decision makers in outdoor advertising.</h2>
+      </div>
+      <p style="margin:0;max-width:600px;font-size:17px;line-height:1.6;color:#3E5057">Three subscriber types, one standard. Pricing is tailored to your portfolio, and early-bird members lock in their rate for life.</p>
+    </div>
+    <div style="margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px;align-items:stretch">
+      <div style="background:#FFFFFF;border:1px solid #DDE4E6;border-radius:14px;padding:32px 30px;display:flex;flex-direction:column">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;letter-spacing:-0.02em">Brand Marketing Teams</div>
+        <div style="margin-top:8px;font-size:14px;color:#55666C">Prove what your OOH spend delivers.</div>
+        <div style="height:1px;background:#EDF1F2;margin:24px 0"></div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:15px;line-height:1.5;color:#2E4148;flex:1">
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#E6F8FB;color:#007F96;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Interactive dashboard for campaign monitoring</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#E6F8FB;color:#007F96;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Weekly field validation with photo proof &amp; audit trail</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#E6F8FB;color:#007F96;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Monthly impressions, reach &amp; SEC% split per billboard</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#E6F8FB;color:#007F96;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>OOH measurement data analytics</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#E6F8FB;color:#007F96;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Downloadable campaign performance reports</div>
+        </div>
+        <a href="early-access.html" style="margin-top:32px;display:block;text-align:center;padding:14px;border-radius:8px;border:1.5px solid #0B2E59;color:#0B2E59;font-weight:600;font-size:15px" style-hover="background:#0B2E59;color:#FFFFFF">Choose plan</a>
+      </div>
+      <div style="background:#0B2E59;color:#FFFFFF;border-radius:14px;padding:32px 30px;display:flex;flex-direction:column;box-shadow:0 24px 60px -28px rgba(11,46,89,0.7)">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;letter-spacing:-0.02em">Media Agencies</span><span style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.06em;background:#00B8D9;color:#0D1A1F;padding:5px 10px;border-radius:999px;white-space:nowrap">MOST POPULAR</span></div>
+        <div style="margin-top:8px;font-size:14px;color:#C5D3E6">Plan and report across every client.</div>
+        <div style="height:1px;background:rgba(255,255,255,0.16);margin:24px 0"></div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:15px;line-height:1.5;color:#E8EEF6;flex:1">
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#00B8D9;color:#0B2E59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Multi-brand dashboard for managing OOH inventories</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#00B8D9;color:#0B2E59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Weekly field validation with photo proof &amp; audit trail</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#00B8D9;color:#0B2E59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Monthly impressions, reach &amp; SEC% split per billboard</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#00B8D9;color:#0B2E59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Weekly vehicle &amp; pedestrian analytics per billboard</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#00B8D9;color:#0B2E59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Full OOH landscape spend and measurement reporting</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#00B8D9;color:#0B2E59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Downloadable brand performance reports</div>
+        </div>
+        <a href="early-access.html" style="margin-top:32px;display:block;text-align:center;padding:14px;border-radius:8px;background:#FFFFFF;color:#0B2E59;font-weight:600;font-size:15px" style-hover="background:#E6F8FB;color:#0B2E59">Choose plan</a>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #DDE4E6;border-radius:14px;padding:32px 30px;display:flex;flex-direction:column">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;letter-spacing:-0.02em">OOH Media Owners</div>
+        <div style="margin-top:8px;font-size:14px;color:#55666C">Independent proof for every board you sell.</div>
+        <div style="height:1px;background:#EDF1F2;margin:24px 0"></div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:15px;line-height:1.5;color:#2E4148;flex:1">
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#E6F8FB;color:#007F96;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Independent third-party audience measurement for all boards</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#E6F8FB;color:#007F96;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Billboard inventory audit</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#E6F8FB;color:#007F96;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Weather-related billboard damage monitoring</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#E6F8FB;color:#007F96;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Data to support sales pitches</div>
+          <div style="display:flex;gap:12px"><span style="flex:0 0 20px;height:20px;border-radius:50%;background:#E6F8FB;color:#007F96;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">✓</span>Hi-res proof-of-flighting reports</div>
+        </div>
+        <a href="early-access.html" style="margin-top:32px;display:block;text-align:center;padding:14px;border-radius:8px;border:1.5px solid #0B2E59;color:#0B2E59;font-weight:600;font-size:15px" style-hover="background:#0B2E59;color:#FFFFFF">Choose plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact" style="padding:0 24px 32px;scroll-margin-top:60px">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:32px;padding:clamp(64px,8vw,104px) 0 56px;border-bottom:1px solid #DDE4E6">
+      <div style="max-width:680px">
+        <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(32px,4.4vw,54px);line-height:1.05;letter-spacing:-0.035em;text-wrap:balance">Ready to measure what <span style="color:#007F96">actually matters?</span></h2>
+        <p style="margin:18px 0 0;font-size:17px;line-height:1.6;color:#3E5057">The pilot launches in Accra, Kumasi and Takoradi in Q1 2027. Join early to lock in your rate before pricing increases.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px">
+        <a href="early-access.html" style="white-space:nowrap;background:#0B2E59;color:#FFFFFF;font-weight:600;font-size:15px;padding:15px 24px;border-radius:8px" style-hover="background:#123F78;color:#FFFFFF">Early Bird access →</a>
+        <a href="mailto:sales@populosdata.com" style="white-space:nowrap;border:1.5px solid #C9D3D6;color:#0D1A1F;font-weight:600;font-size:15px;padding:14px 22px;border-radius:8px;background:#FFFFFF" style-hover="border-color:#0B2E59;color:#0B2E59">Contact us</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:40px;padding:48px 0">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:center;gap:10px"><img src="assets/populos-mark-navy.png" alt="" style="width:30px;height:auto"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;color:#0B2E59;letter-spacing:-0.02em">Populos</span></div>
+        <span style="font-size:14px;line-height:1.6;color:#55666C">The OOH Intelligence Platform.<br>A product of E Brandistry.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:14px">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#0D1A1F;margin-bottom:4px">PLATFORM</span>
+        <a href="#features" style="color:#2E4148" style-hover="color:#0B2E59">Features</a>
+        <a href="#product" style="color:#2E4148" style-hover="color:#0B2E59">Dashboard</a>
+        <a href="#standards" style="color:#2E4148" style-hover="color:#0B2E59">Standards</a>
+        <a href="#pricing" style="color:#2E4148" style-hover="color:#0B2E59">Plans</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:14px">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#0D1A1F;margin-bottom:4px">CONTACT</span>
+        <a href="mailto:hello@populosdata.com" style="display:flex;flex-direction:column;gap:2px;color:#2E4148" style-hover="color:#0B2E59"><span style="font-size:12px;color:#55666C">General</span>hello@populosdata.com</a>
+        <a href="mailto:sales@populosdata.com" style="display:flex;flex-direction:column;gap:2px;color:#2E4148" style-hover="color:#0B2E59"><span style="font-size:12px;color:#55666C">Sales &amp; partnerships</span>sales@populosdata.com</a>
+        <a href="tel:+233558890184" style="display:flex;flex-direction:column;gap:2px;color:#2E4148" style-hover="color:#0B2E59"><span style="font-size:12px;color:#55666C">Phone</span>+233 55 889 0184</a>
+        <a href="https://www.linkedin.com/populosdata" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;gap:2px;color:#2E4148" style-hover="color:#0B2E59"><span style="font-size:12px;color:#55666C">LinkedIn</span>linkedin.com/populosdata</a>
+        <a href="early-access.html" style="color:#2E4148" style-hover="color:#0B2E59">Early Bird access</a>
+        <span style="color:#2E4148">Accra, Ghana</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#0D1A1F;margin-bottom:4px">STAY UPDATED</span>
+        <sc-if value="{{ newsOpen }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ submitNews }}" style="display:flex;flex-wrap:wrap;gap:8px">
+            <input type="email" required="" value="{{ newsEmail }}" onChange="{{ setNewsEmail }}" placeholder="Your email" aria-label="Email" style="flex:1 1 150px;min-width:0;height:44px;padding:0 14px;border-radius:8px;border:1px solid #C9D3D6;background:#FFFFFF;color:#0D1A1F;font:400 14px 'Inter',sans-serif;outline:none" style-focus="border-color:#00B8D9">
+            <button type="submit" disabled="{{ newsBusy }}" style="height:44px;padding:0 16px;border-radius:8px;border:0;background:#0B2E59;color:#FFFFFF;font:600 14px 'Inter',sans-serif;cursor:pointer" style-hover="background:#123F78">Subscribe</button>
+          </form>
+        </sc-if>
+        <sc-if value="{{ newsDone }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:14px;color:#067647">Subscribed. Thanks!</span>
+        </sc-if>
+        <sc-if value="{{ newsError }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:13px;color:#B42318">Couldn't save that. Please try again.</span>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px 32px;text-align:center;padding-top:22px;border-top:1px solid #DDE4E6;font-size:13px;color:#55666C">
+      <span>© 2026 E Brandistry - Populos. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;leadsEndpoint&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Email capture&quot;},&quot;boardsTracked&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:2000,&quot;min&quot;:0,&quot;max&quot;:100000,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Ticker&quot;},&quot;showSplash&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Intro&quot;}}">
+// Email capture: set LEADS_ENDPOINT (or the leadsEndpoint prop) to a Google Apps Script / Formspree / Sheet webhook URL.
+// Each signup is POSTed as {email, source, page, submittedAt}. With no endpoint, the visitor is sent to the Early Access form with the email prefilled.
+const LEADS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwBZGrTBz0PDxgjdh4vvFaM0DUWWVOQgegrMibXCm84eWvON7sChod1LJEd01DCCC1l/exec';
+const LEADS_FORM = 'early-access.html';
+class Component extends DCLogic {
+  state = { w: typeof window !== 'undefined' ? window.innerWidth : 1280, menu: false, heroEmail: '', newsEmail: '', hero: 'open', news: 'open', boards: 0, corridors: 0, splash: 'on', load: 0 };
+  componentDidMount() {
+    this.onResize = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('resize', this.onResize);
+    if (this.props.showSplash === false) { this.setState({ splash: 'off' }); this.startCounter(); return; }
+    document.body.style.overflow = 'hidden';
+    const s0 = performance.now(), dur = 3000;
+    let loaded = document.readyState === 'complete';
+    if (!loaded) window.addEventListener('load', () => { loaded = true; }, { once: true });
+    const finish = () => {
+      if (this.done) return; this.done = true;
+      clearInterval(this.sint); clearTimeout(this.tmax);
+      this.setState({ load: 1 });
+      this.t1 = setTimeout(() => {
+        this.setState({ splash: 'fading' }); document.body.style.overflow = '';
+        this.startCounter();
+        this.t2 = setTimeout(() => this.setState({ splash: 'off' }), 520);
+      }, 250);
+    };
+    this.sint = setInterval(() => {
+      let p = Math.min((performance.now() - s0) / dur, 1);
+      if (!loaded) p = Math.min(p, 0.9);
+      this.setState({ load: 1 - Math.pow(1 - p, 2) });
+      if (p >= 1) finish();
+    }, 16);
+    this.tmax = setTimeout(finish, 4500);
+  }
+  startCounter() {
+    const target = this.props.boardsTracked ?? 2000;
+    const start = performance.now();
+    this.cint = setInterval(() => {
+      const p = Math.min((performance.now() - start) / 2400, 1), e = 1 - Math.pow(1 - p, 3);
+      this.setState({ boards: Math.floor(e * target), corridors: Math.floor(e * 40) });
+      if (p >= 1) clearInterval(this.cint);
+    }, 16);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); clearInterval(this.cint); clearInterval(this.sint); clearTimeout(this.tmax); clearTimeout(this.t1); clearTimeout(this.t2); document.body.style.overflow = ''; }
+  async capture(email, source, key) {
+    const endpoint = this.props.leadsEndpoint || LEADS_ENDPOINT;
+    if (!endpoint) {
+      location.href = LEADS_FORM + '?email=' + encodeURIComponent(email) + '&source=' + source;
+      this.setState({ [key]: 'done' });
+      return;
+    }
+    this.setState({ [key]: 'busy' });
+    try {
+      await fetch(endpoint, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ email, source, page: location.href, submittedAt: new Date().toISOString() }) });
+      this.setState({ [key]: 'done' });
+    } catch (err) { this.setState({ [key]: 'error' }); }
+  }
+  renderVals() {
+    const mobile = this.state.w < 900;
+    const { hero, news } = this.state;
+    return {
+      isMobile: mobile, isDesktop: !mobile,
+      menuVisible: mobile && this.state.menu,
+      menuLabel: this.state.menu ? 'Close' : 'Menu',
+      toggleMenu: () => this.setState(s => ({ menu: !s.menu })),
+      closeMenu: () => this.setState({ menu: false }),
+      heroEmail: this.state.heroEmail,
+      setHeroEmail: (e) => this.setState({ heroEmail: e.target.value }),
+      submitHero: (e) => { e.preventDefault(); this.capture(this.state.heroEmail, 'hero', 'hero'); },
+      heroOpen: hero !== 'done', heroDone: hero === 'done', heroError: hero === 'error', heroBusy: hero === 'busy',
+      newsEmail: this.state.newsEmail,
+      setNewsEmail: (e) => this.setState({ newsEmail: e.target.value }),
+      submitNews: (e) => { e.preventDefault(); this.capture(this.state.newsEmail, 'newsletter', 'news'); },
+      newsOpen: news !== 'done', newsDone: news === 'done', newsError: news === 'error', newsBusy: news === 'busy',
+      boardsCount: this.state.boards.toLocaleString(),
+      splashVisible: this.state.splash !== 'off',
+      splashOpacity: this.state.splash === 'fading' ? 0 : 1,
+      splashPct: (this.state.load * 100).toFixed(1) + '%',
+      corridorsCount: this.state.corridors,
+    };
+  }
+}
+</script>
+</body>
+</html>
