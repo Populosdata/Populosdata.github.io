@@ -1,0 +1,86 @@
+name: Release scheduled resources
+
+# Each run releases at most ONE /resources/ article: the unreleased article with the lowest
+# `order` in _resources/manifest.json, and only if El has set it to vetted. Its public date is
+# the day of release (`releasedOn`). Everything else stays as a "Coming soon" card with no date.
+# At most one release per calendar day (UTC): a second run on such a day releases nothing and says so.
+
+on:
+  schedule:
+    - cron: '15 5 * * 2,4'   # 05:15 UTC every Tuesday and Thursday
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run: report what would be published and change nothing'
+        type: boolean
+        required: true
+        default: true
+
+permissions:
+  contents: write   # commit the released article, index, manifest and sitemap to main
+  pages: write      # request a GitHub Pages build after the bot commit
+
+concurrency:
+  group: release-resources
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+    steps:
+      - name: Refuse to publish from any branch other than main
+        if: env.DRY_RUN != 'true' && github.ref != 'refs/heads/main'
+        run: |
+          echo "::error title=Wrong branch::Publishing runs only on main (this run is on $GITHUB_REF)."
+          exit 1
+
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Build resources
+        id: build
+        run: |
+          set -euo pipefail
+          if [ "$DRY_RUN" = "true" ]; then
+            python3 _tools/build_resources.py --dry-run
+          else
+            python3 _tools/build_resources.py
+          fi
+
+      - name: Check that only allowed files changed
+        run: |
+          set -euo pipefail
+          changed="$(git status --porcelain --untracked-files=all | cut -c4-)"
+          echo "Changed files:"; echo "${changed:-none}"
+          unexpected="$(printf '%s\n' "$changed" | grep -v -E '^(resources/[a-z0-9-]+\.html|_resources/manifest\.json|sitemap\.xml)$' | grep -v '^$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo "::error title=Unexpected change::Files outside the allowed set changed: $unexpected"
+            exit 1
+          fi
+          if [ "$DRY_RUN" = "true" ] && [ -n "$changed" ]; then
+            echo "::error title=Dry run wrote files::A dry run must not change anything: $changed"
+            exit 1
+          fi
+
+      - name: Commit and push the release
+        if: env.DRY_RUN != 'true' && steps.build.outputs.changed == 'true'
+        env:
+          PUBLISHED: ${{ steps.build.outputs.published }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A -- resources sitemap.xml _resources/manifest.json
+          git commit -m "Release resources: ${PUBLISHED:-index refresh}"
+          git push origin HEAD:main
+
+      - name: Request a GitHub Pages build
+        if: env.DRY_RUN != 'true' && steps.build.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds" --jq '"Pages build requested: " + .status'
