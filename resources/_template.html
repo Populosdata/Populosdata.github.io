@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-GH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- POST TEMPLATE. Copy this file to resources/<slug>.html, then replace every REPLACE value. See _docs/RESOURCES-HOWTO.md. -->
+<!-- Delete the next line when the post is ready to publish. -->
+<meta name="robots" content="noindex">
+<title>REPLACE: Post title | Populos</title>
+<meta name="description" content="REPLACE: one-sentence summary of the post, 120 to 155 characters.">
+<link rel="canonical" href="https://www.populosdata.com/resources/REPLACE-slug.html">
+<meta property="og:title" content="REPLACE: Post title | Populos">
+<meta property="og:description" content="REPLACE: same text as the meta description.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.populosdata.com/resources/REPLACE-slug.html">
+<meta property="og:image" content="https://www.populosdata.com/assets/og-card.png">
+<meta property="article:published_time" content="REPLACE-YYYY-MM-DD">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/populos-mark-navy.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+html{scroll-behavior:smooth;background:#FAFBFB}
+body{margin:0;background:#FAFBFB;color:#0D1A1F;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#007F96;text-decoration:none}
+a:hover{color:#0B2E59}
+::selection{background:#00B8D9;color:#0D1A1F}
+.site-header{position:sticky;top:0;z-index:50;background:rgba(250,251,251,0.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #DDE4E6}
+.site-nav{max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
+.brand{display:flex;align-items:center;gap:12px;color:#0B2E59;flex-shrink:0}
+.brand img{width:32px;height:auto;display:block}
+.brand span{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:21px;letter-spacing:-0.02em;color:#0B2E59}
+.nav-right{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px}
+.nav-links{display:flex;flex-wrap:wrap;gap:8px 24px;font-size:14px;font-weight:500}
+.nav-links a{color:#2E4148}
+.nav-links a:hover,.nav-links a[aria-current]{color:#0B2E59}
+.nav-cta{white-space:nowrap;background:#0B2E59;color:#FFFFFF;font-weight:600;font-size:14px;padding:11px 18px;border-radius:8px}
+.nav-cta:hover{background:#123F78;color:#FFFFFF}
+@media (max-width:899px){.nav-right{width:100%;justify-content:space-between}.nav-links{gap:8px 18px}}
+.eyebrow{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.06em;color:#007F96;text-transform:uppercase}
+h1{margin:16px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(34px,4.6vw,56px);line-height:1.04;letter-spacing:-0.035em;text-wrap:balance}
+.lede{margin:20px 0 0;max-width:600px;font-size:17px;line-height:1.6;color:#3E5057;text-wrap:pretty}
+.post-list{margin:48px 0 0;padding:0;list-style:none;display:grid;gap:1px;background:#DDE4E6;border:1px solid #DDE4E6;border-radius:12px;overflow:hidden}
+.post-list li{background:#FFFFFF}
+.post-list a{display:block;padding:28px 30px;color:#0D1A1F}
+.post-list a:hover{background:#F3FBFD;color:#0D1A1F}
+.post-list time{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.04em;color:#007F96}
+.post-list h2{margin:10px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:21px;letter-spacing:-0.02em}
+.post-list p{margin:10px 0 0;font-size:15px;line-height:1.6;color:#3E5057}
+.site-footer{padding:0 24px 32px}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:40px;padding:48px 0;border-top:1px solid #DDE4E6}
+.footer-col{display:flex;flex-direction:column;gap:12px;font-size:14px}
+.footer-col a{color:#2E4148}
+.footer-col a:hover{color:#0B2E59}
+.footer-head{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.06em;color:#0D1A1F;margin-bottom:4px}
+.contact-link{display:flex;flex-direction:column;gap:2px}
+.contact-link span{font-size:12px;color:#55666C}
+.footer-legal{display:flex;justify-content:center;text-align:center;padding-top:22px;border-top:1px solid #DDE4E6;font-size:13px;color:#55666C}
+.post{max-width:720px;margin:0 auto}
+.post .back{font-size:14px;font-weight:500;color:#007F96}
+.post time{display:block;margin-top:28px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.04em;color:#007F96}
+.post-body{margin-top:32px;font-size:17px;line-height:1.7;color:#2E4148}
+.post-body h2{margin:40px 0 0;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:26px;line-height:1.2;letter-spacing:-0.02em;color:#0D1A1F}
+.post-body p{margin:18px 0 0}
+.post-body ul,.post-body ol{margin:18px 0 0;padding-left:22px}
+.post-body li{margin-top:8px}
+.placeholder-note{margin-top:32px;padding:16px 18px;border-radius:8px;background:#FFF6E5;border:1px solid #F5C77E;color:#7A4B00;font-size:15px;line-height:1.5}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <nav class="site-nav" aria-label="Main">
+    <a class="brand" href="/"><img src="/assets/populos-mark-navy.png" alt=""><span>Populos</span></a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="/#features">Features</a>
+        <a href="/#product">Dashboard</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/#contact">Contact</a>
+        <a href="/resources/">Resources</a>
+      </div>
+      <a class="nav-cta" href="/early-access.html">Early Bird access</a>
+    </div>
+  </nav>
+</header>
+
+<main style="padding:clamp(48px,7vw,88px) 24px clamp(64px,8vw,104px)">
+  <article class="post">
+    <a class="back" href="/resources/">&larr; All resources</a>
+    <time datetime="REPLACE-YYYY-MM-DD">REPLACE: D Month YYYY</time>
+    <h1>REPLACE: Post title</h1>
+    <div class="post-body">
+      <p>REPLACE: opening paragraph.</p>
+      <h2>REPLACE: section heading</h2>
+      <p>REPLACE: section text. Use &lt;h2&gt; for sections and &lt;p&gt; for paragraphs. Keep exactly one &lt;h1&gt; per post.</p>
+    </div>
+    <p style="margin-top:48px"><a class="back" href="/resources/">&larr; Back to all resources</a></p>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div style="display:flex;align-items:center;gap:10px"><img src="/assets/populos-mark-navy.png" alt="" style="width:30px;height:auto"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;color:#0B2E59;letter-spacing:-0.02em">Populos</span></div>
+        <span style="line-height:1.6;color:#55666C">The OOH Intelligence Platform.<br>A product of E Brandistry.</span>
+      </div>
+      <div class="footer-col">
+        <span class="footer-head">PLATFORM</span>
+        <a href="/#features">Features</a>
+        <a href="/#product">Dashboard</a>
+        <a href="/#standards">Standards</a>
+        <a href="/#pricing">Plans</a>
+        <a href="/resources/">Resources</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-head">CONTACT</span>
+        <a class="contact-link" href="mailto:hello@populosdata.com"><span>General</span>hello@populosdata.com</a>
+        <a class="contact-link" href="mailto:sales@populosdata.com"><span>Sales &amp; partnerships</span>sales@populosdata.com</a>
+        <a class="contact-link" href="tel:+233558890184"><span>Phone</span>+233 55 889 0184</a>
+        <a class="contact-link" href="https://www.linkedin.com/company/populosdata" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span>linkedin.com/company/populosdata</a>
+        <a href="/early-access.html">Early Bird access</a>
+        <span style="color:#2E4148">Accra, Ghana</span>
+      </div>
+    </div>
+    <div class="footer-legal"><span>© 2026 E Brandistry - Populos. All rights reserved.</span></div>
+  </div>
+</footer>
+</body>
+</html>
