@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Build the /resources/ section from _resources/manifest.json.
 
-An article is published only when its releaseDate <= today (UTC) AND vetted is true.
-Publishing writes resources/<slug>.html from _unreleased/<slug>.html, switches its card
-from "Coming <date>" to "Read", sets its manifest status, and adds it to sitemap.xml.
+Articles have a planned `order`, not a date. Each run releases AT MOST ONE article: the
+unreleased article with the lowest order number, and only if it is vetted. If that article is
+not vetted, nothing is released (a later vetted article does not jump the queue).
+Releasing stamps `releasedOn` with today's date (UTC); that date is the only date ever shown
+publicly (page, metadata, sitemap). Unreleased articles show "Coming soon" and no date.
 The script only ever writes resources/*.html, _resources/manifest.json and sitemap.xml.
 
 Usage:  python _tools/build_resources.py [--dry-run]
@@ -26,8 +28,8 @@ OUT_DIR = 'resources'
 SITEMAP = 'sitemap.xml'
 CATEGORIES = {'Guides': 'guides', 'Case Studies': 'case-studies', 'Trends': 'trends'}
 STATUSES = {'scheduled', 'published'}
-FIELDS = {'slug': str, 'title': str, 'excerpt': str, 'category': str, 'readMinutes': int,
-          'releaseDate': str, 'vetted': bool, 'image': (str, type(None)), 'status': str}
+FIELDS = {'slug': str, 'title': str, 'excerpt': str, 'category': str, 'readMinutes': int, 'order': int,
+          'vetted': bool, 'releasedOn': (str, type(None)), 'image': (str, type(None)), 'status': str}
 AUTHOR = 'Populos Team'
 IMAGE_NOTE = ('Photographs and illustrations in this article are used to explain how out-of-home is measured. '
               'Any brand, advertiser or media owner shown is incidental, and nothing here is intended to '
@@ -56,7 +58,7 @@ def load_manifest(root):
         raise BuildError(f'{MANIFEST} is not valid JSON: {e}')
     if not isinstance(data, dict) or not isinstance(data.get('articles'), list) or not data['articles']:
         raise BuildError(f'{MANIFEST} must be an object with a non-empty "articles" list')
-    seen = set()
+    seen, orders = set(), set()
     for n, a in enumerate(data['articles'], 1):
         where = f'{MANIFEST} article #{n}'
         if not isinstance(a, dict):
@@ -80,12 +82,21 @@ def load_manifest(root):
             raise BuildError(f'{where} category "{a["category"]}" must be one of {sorted(CATEGORIES)}')
         if not 1 <= a['readMinutes'] <= 60:
             raise BuildError(f'{where} readMinutes must be between 1 and 60')
-        try:
-            a['_date'] = dt.date.fromisoformat(a['releaseDate'])
-        except ValueError:
-            raise BuildError(f'{where} releaseDate "{a["releaseDate"]}" is not YYYY-MM-DD')
+        if a['order'] < 1:
+            raise BuildError(f'{where} order must be 1 or more')
+        if a['order'] in orders:
+            raise BuildError(f'{where} order {a["order"]} is duplicated')
+        orders.add(a['order'])
+        a['_released'] = None
+        if a['releasedOn'] is not None:
+            try:
+                a['_released'] = dt.date.fromisoformat(a['releasedOn'])
+            except ValueError:
+                raise BuildError(f'{where} releasedOn "{a["releasedOn"]}" is not YYYY-MM-DD')
         if a['status'] not in STATUSES:
             raise BuildError(f'{where} status "{a["status"]}" must be one of {sorted(STATUSES)}')
+        if (a['status'] == 'published') != (a['releasedOn'] is not None):
+            raise BuildError(f'{where} status "{a["status"]}" disagrees with releasedOn {a["releasedOn"]!r}')
         if a['image'] is not None and not os.path.isfile(os.path.join(root, a['image'].lstrip('/'))):
             raise BuildError(f'{where} image "{a["image"]}" does not exist')
         if not os.path.isfile(os.path.join(root, SOURCE_DIR, a['slug'] + '.html')):
@@ -183,23 +194,31 @@ def byline(a, when):
             f'{a["readMinutes"]} min read</span></span></div>')
 
 
-def card(a, live, today):
+def public_date(a):
+    """The only date ever shown for an article: the day it was actually released."""
+    return a['_released']
+
+
+def released_when(a):
+    d = public_date(a)
+    return f'<time datetime="{d.isoformat()}">{long_date(d)}</time>'
+
+
+def card(a):
     cat = f'<span class="category cat-{CATEGORIES[a["category"]]}">{esc(a["category"])}</span>'
-    if live:
-        when = f'<time datetime="{a["releaseDate"]}">{long_date(a["_date"])}</time>'
+    if a['releasedOn'] is not None:
         inner = (f'{cover(a)}<div class="card-body">{cat}<h2>{esc(a["title"])}</h2><p>{esc(a["excerpt"])}</p>'
-                 f'{byline(a, when)}<span class="card-action">Read</span></div>')
+                 f'{byline(a, released_when(a))}<span class="card-action">Read</span></div>')
         return f'<li class="card"><a class="card-link" href="/resources/{a["slug"]}.html">{inner}</a></li>'
-    label = f'Coming {long_date(a["_date"])}' if a['_date'] > today else 'Coming soon'
     inner = (f'{cover(a)}<div class="card-body">{cat}<h2>{esc(a["title"])}</h2><p>{esc(a["excerpt"])}</p>'
-             f'{byline(a, label)}</div>')
+             f'{byline(a, "Coming soon")}</div>')
     return f'<li class="card card-coming" aria-disabled="true">{inner}</li>'
 
 
-def index_page(articles, live, today):
-    released = sorted([a for a in articles if live[a['slug']]], key=lambda a: a['_date'], reverse=True)
-    coming = sorted([a for a in articles if not live[a['slug']]], key=lambda a: a['_date'])
-    cards = '\n'.join(card(a, live[a['slug']], today) for a in released + coming)
+def index_page(articles):
+    released = sorted([a for a in articles if a['releasedOn'] is not None], key=lambda a: (a['_released'], a['order']), reverse=True)
+    coming = sorted([a for a in articles if a['releasedOn'] is None], key=lambda a: a['order'])
+    cards = '\n'.join(card(a) for a in released + coming)
     body = f'''<main class="wrap">
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">&rsaquo;</span><span aria-current="page">All blogs</span></nav>
   <div class="intro">
@@ -218,7 +237,7 @@ def index_page(articles, live, today):
 def article_page(root, a):
     src = open(os.path.join(root, SOURCE_DIR, a['slug'] + '.html'), encoding='utf-8').read()
     url = f'{SITE}/resources/{a["slug"]}.html'
-    when = f'<time datetime="{a["releaseDate"]}">{long_date(a["_date"])}</time>'
+    when = released_when(a)
     body = f'''<main class="wrap article-wrap">
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">&rsaquo;</span><a href="/resources/">All blogs</a></nav>
   <article class="article">
@@ -233,11 +252,11 @@ def article_page(root, a):
     <p><a class="back" href="/resources/">&larr; All blogs</a></p>
   </article>
 </main>'''
-    extra = f'<meta property="article:published_time" content="{a["releaseDate"]}">\n<meta name="author" content="{AUTHOR}">\n'
+    extra = f'<meta property="article:published_time" content="{public_date(a).isoformat()}">\n<meta name="author" content="{AUTHOR}">\n'
     return page(f'{a["title"]} | Populos', a['excerpt'], url, 'article', body, extra)
 
 
-def sitemap(root, articles, live):
+def sitemap(root, articles):
     path = os.path.join(root, SITEMAP)
     current = open(path, encoding='utf-8').read()
     entries = re.findall(r'<url>\s*<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>\s*</url>', current)
@@ -245,27 +264,39 @@ def sitemap(root, articles, live):
         raise BuildError(f'{SITEMAP} has no <url> entries to preserve')
     article_urls = {f'{SITE}/resources/{a["slug"]}.html' for a in articles}
     base = [(loc, mod) for loc, mod in entries if loc not in article_urls]
-    pub = [(f'{SITE}/resources/{a["slug"]}.html', a['releaseDate'])
-           for a in sorted(articles, key=lambda a: a['_date']) if live[a['slug']]]
+    pub = [(f'{SITE}/resources/{a["slug"]}.html', public_date(a).isoformat())
+           for a in sorted(articles, key=lambda a: a['order']) if a['releasedOn'] is not None]
     urls = ''.join(f'  <url>\n    <loc>{loc}</loc>\n    <lastmod>{mod}</lastmod>\n  </url>\n' for loc, mod in base + pub)
     return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n'
+
+
+def next_release(articles):
+    """The single article this run may release: the lowest unreleased order number, only if vetted."""
+    unreleased = [a for a in articles if a['releasedOn'] is None]
+    if not unreleased:
+        return None, None
+    first = min(unreleased, key=lambda a: a['order'])
+    return (first if first['vetted'] is True else None), first
 
 
 def build(root, today, dry_run):
     data = load_manifest(root)
     articles = data['articles']
-    live = {a['slug']: a['_date'] <= today and a['vetted'] is True for a in articles}
     for a in articles:
         page_exists = os.path.isfile(os.path.join(root, OUT_DIR, a['slug'] + '.html'))
-        if (a['status'] == 'published' or page_exists) and not live[a['slug']]:
-            raise BuildError(f'"{a["slug"]}" is already published but is no longer eligible '
-                             f'(releaseDate {a["releaseDate"]}, vetted {a["vetted"]}). Resolve by hand; nothing was changed.')
-    outputs = {os.path.join(OUT_DIR, 'index.html'): index_page(articles, live, today),
-               SITEMAP: sitemap(root, articles, live)}
+        if a['releasedOn'] is None and page_exists:
+            raise BuildError(f'"{a["slug"]}" has a page but no releasedOn. Resolve by hand; nothing was changed.')
+        if a['releasedOn'] is not None and a['vetted'] is not True:
+            raise BuildError(f'"{a["slug"]}" was released on {a["releasedOn"]} but is no longer vetted. Resolve by hand; nothing was changed.')
+        if a['releasedOn'] is not None and a['_released'] > today:
+            raise BuildError(f'"{a["slug"]}" has releasedOn {a["releasedOn"]}, which is after today ({today}).')
+    release, first = next_release(articles)
+    if release is not None:
+        release['releasedOn'], release['_released'], release['status'] = today.isoformat(), today, 'published'
+    outputs = {os.path.join(OUT_DIR, 'index.html'): index_page(articles), SITEMAP: sitemap(root, articles)}
     for a in articles:
-        if live[a['slug']]:
+        if a['releasedOn'] is not None:
             outputs[os.path.join(OUT_DIR, a['slug'] + '.html')] = article_page(root, a)
-            a['status'] = 'published'
     clean = {'articles': [{k: v for k, v in a.items() if not k.startswith('_')} for a in articles]}
     outputs[MANIFEST] = json.dumps(clean, indent=2, ensure_ascii=False) + '\n'
     changed = []
@@ -277,7 +308,8 @@ def build(root, today, dry_run):
             if not dry_run:
                 with open(path, 'w', encoding='utf-8', newline='\n') as f:
                     f.write(text)
-    return [s for s, ok in live.items() if ok], changed
+    waiting = None if release or first is None else f'{first["slug"]} (order {first["order"]}, not vetted)'
+    return (release['slug'] if release else None), waiting, changed
 
 
 def main():
@@ -288,18 +320,19 @@ def main():
     override = os.environ.get('RESOURCES_TODAY')
     today = dt.date.fromisoformat(override) if override else dt.datetime.now(dt.timezone.utc).date()
     try:
-        published, changed = build(args.root, today, args.dry_run)
+        released, waiting, changed = build(args.root, today, args.dry_run)
     except BuildError as e:
         print(f'::error title=Resources build failed::{e}')
         print(f'ERROR: {e}', file=sys.stderr)
         return 1
     mode = 'DRY RUN, nothing written' if args.dry_run else 'written'
-    print(f'today (UTC) = {today}; eligible: {published or "none"}; {mode}; changed: {changed or "nothing"}')
+    print(f'today (UTC) = {today}; released this run: {released or "none"}'
+          + (f'; next in planned order: {waiting}' if waiting else '') + f'; {mode}; changed: {changed or "nothing"}')
     out = os.environ.get('GITHUB_OUTPUT')
     if out:
         with open(out, 'a', encoding='utf-8') as f:
             f.write(f'changed={"true" if changed and not args.dry_run else "false"}\n')
-            f.write(f'published={",".join(published)}\n')
+            f.write(f'published={released or ""}\n')
     return 0
 
 

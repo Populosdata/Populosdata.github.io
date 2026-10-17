@@ -2,9 +2,11 @@
 
 This file is for El. It is not served on the website: Jekyll skips folders that start with `_`. The repo is public, though, so anyone can read it on GitHub. For that reason it doesn't quote any wording that was removed from the articles.
 
-An article goes live only when **both** of these are true in `_resources/manifest.json`:
-- its `releaseDate` has arrived (UTC);
-- `vetted` is `true`.
+Articles have no fixed release date. They go out in their planned `order` in `_resources/manifest.json`, **one per scheduled run at most**. An article is released only when **both** of these are true:
+- `vetted` is `true`;
+- it is the lowest planned order number not yet released.
+
+If the next article in order is not vetted, nothing is released, even if a later article is vetted. The public date is the day of release, which the release stamps into `releasedOn`.
 
 **Only El sets `vetted` to `true`.** Before doing that for an article, confirm the items below for it.
 
@@ -22,7 +24,7 @@ Some lines were removed or replaced with neutral wording before merge. The origi
 | 09 | A description of how the rules are stored internally |
 | 10 | A computer-vision claim, and the description of how constants are stored (one section and one sentence) |
 
-## Claims El confirms are true on the day of release
+## Claims El confirms are true before vetting (listed in planned order)
 - [ ] **01** "Populos is built to those same reference points." "Populos treats pedestrian traffic intensity, vehicular traffic intensity and the specific dynamics of transit points as first-class parts of the model."
 - [ ] **02** "In the Populos model these are not four independent counts but one coherent chain."
 - [ ] **03** "Populos scores every board on a single rating built from a set of physical and positional factors, each verified in the field."
@@ -40,5 +42,5 @@ No source images are in the repo. Every article uses the plain branded cover unt
 
 ## Release mechanics
 1. Set `"vetted": true` for the article in `_resources/manifest.json`, via a PR that El approves and merges.
-2. The workflow **Release scheduled resources** runs at 05:15 UTC on Tuesdays and Thursdays. It can also be run by hand from the Actions tab: leave **dry_run** ticked to preview, untick it to publish.
-3. After a release, check the live page, its card on `/resources/`, and `sitemap.xml`.
+2. The workflow **Release scheduled resources** runs at 05:15 UTC on Tuesdays and Thursdays. At each run it releases the next article in order, if that article is vetted. It can also be run by hand from the Actions tab: leave **dry_run** ticked to preview, untick it to publish.
+3. After a release, check the live page, its card on `/resources/`, and `sitemap.xml`. All three should show the day of release.

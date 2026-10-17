@@ -1,7 +1,8 @@
 name: Release scheduled resources
 
-# Publishes a /resources/ article only when its releaseDate <= today (UTC) AND vetted is true
-# in _resources/manifest.json. Everything else stays as a "Coming <date>" card.
+# Each run releases at most ONE /resources/ article: the unreleased article with the lowest
+# `order` in _resources/manifest.json, and only if El has set it to vetted. Its public date is
+# the day of release (`releasedOn`). Everything else stays as a "Coming soon" card with no date.
 
 on:
   schedule:
