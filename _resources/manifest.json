@@ -1,0 +1,114 @@
+{
+  "articles": [
+    {
+      "slug": "what-ooh-measurement-actually-measures",
+      "title": "What OOH Measurement Actually Measures and Why It's Different in Ghana",
+      "excerpt": "A plain-language introduction to out-of-home audience measurement, the global standards behind it, and why a Ghana-built currency has to solve problems London and New York never faced.",
+      "category": "Guides",
+      "readMinutes": 5,
+      "releaseDate": "2026-10-27",
+      "vetted": false,
+      "image": null,
+      "status": "scheduled"
+    },
+    {
+      "slug": "impressions-reach-frequency-explained",
+      "title": "Impressions, Reach, Frequency and GRPs: The Vocabulary of a Media Plan",
+      "excerpt": "The four numbers every OOH plan is built on, what each one honestly tells you, and the traps that catch buyers who confuse scale with impact.",
+      "category": "Guides",
+      "readMinutes": 5,
+      "releaseDate": "2026-10-29",
+      "vetted": false,
+      "image": null,
+      "status": "scheduled"
+    },
+    {
+      "slug": "potential-versus-realised-exposure",
+      "title": "Seen vs. Could-Have-Seen: The Idea That Separates Real OOH Measurement From Traffic Counting",
+      "excerpt": "Why the visibility adjustment? Turning a raw pass-by into a genuine view is the single most important step in credible out-of-home measurement.",
+      "category": "Guides",
+      "readMinutes": 4,
+      "releaseDate": "2026-11-03",
+      "vetted": false,
+      "image": null,
+      "status": "scheduled"
+    },
+    {
+      "slug": "measuring-pedestrian-and-informal-transport",
+      "title": "Measuring the Streets as They Are: Pedestrians, Trotros and the African OOH Audience",
+      "excerpt": "Why a vehicle-centric measurement model imported from elsewhere mis-measures Ghanaian cities and how pedestrian and transit-point audiences are properly captured.",
+      "category": "Trends",
+      "readMinutes": 4,
+      "releaseDate": "2026-11-05",
+      "vetted": false,
+      "image": null,
+      "status": "scheduled"
+    },
+    {
+      "slug": "socio-economic-audience-profiling",
+      "title": "Beyond the Head-Count: Profiling Who Is in an OOH Audience",
+      "excerpt": "How out-of-home moves from counting bodies to describing audiences and how socio-economic profiling is done responsibly, without pretending to a precision the data can't support.",
+      "category": "Guides",
+      "readMinutes": 5,
+      "releaseDate": "2026-11-10",
+      "vetted": false,
+      "image": null,
+      "status": "scheduled"
+    },
+    {
+      "slug": "what-makes-a-board-worth-more",
+      "title": "Why Two Boards on the Same Road Are Worth Different Amounts",
+      "excerpt": "The anatomy of a board rating: the structured siting-quality score that explains why identical traffic can deliver very different real audiences.",
+      "category": "Guides",
+      "readMinutes": 4,
+      "releaseDate": "2026-11-12",
+      "vetted": false,
+      "image": null,
+      "status": "scheduled"
+    },
+    {
+      "slug": "the-attribution-gap-and-brand-lift",
+      "title": "The Attribution Gap: Why OOH Drives Sales It Never Gets Credit For",
+      "excerpt": "Out-of-home is an awareness channel whose payoff arrives later and elsewhere. Measuring it like a click-based channel guarantees you'll undervalue it.",
+      "category": "Trends",
+      "readMinutes": 5,
+      "releaseDate": "2026-11-17",
+      "vetted": false,
+      "image": null,
+      "status": "scheduled"
+    },
+    {
+      "slug": "cpm-cost-efficiency-metrics",
+      "title": "CPM, Cost-Per-Reach-Point, and the Real Economics of an OOH Buy",
+      "excerpt": "The cost metrics that turn audience delivery into a business decision, and why the cheapest CPM is often the most expensive way to reach the people who matter.",
+      "category": "Guides",
+      "readMinutes": 4,
+      "releaseDate": "2026-11-19",
+      "vetted": false,
+      "image": null,
+      "status": "scheduled"
+    },
+    {
+      "slug": "neutral-measurement-currency",
+      "title": "Why a Measurement Currency Has to Be Neutral to Be Worth Anything",
+      "excerpt": "The value of an OOH measurement standard comes from its independence. Here's why agency-agnostic, media-owner-agnostic measurement is the whole point, and what breaks when it isn't.",
+      "category": "Trends",
+      "readMinutes": 4,
+      "releaseDate": "2026-11-24",
+      "vetted": false,
+      "image": null,
+      "status": "scheduled"
+    },
+    {
+      "slug": "trust-verification-and-governance",
+      "title": "Numbers You Can Defend: Verification, Governance and the Discipline Behind a Measurement Currency",
+      "excerpt": "Credible OOH measurement isn't just good formulas. It's the field verification, the human-in-the-loop checks, and the governance that let you defend every number to a sceptical buyer.",
+      "category": "Trends",
+      "readMinutes": 5,
+      "releaseDate": "2026-11-26",
+      "vetted": false,
+      "image": null,
+      "status": "scheduled"
+    }
+  ]
+}
