@@ -3,7 +3,9 @@
 
 Articles have a planned `order`, not a date. Each run releases AT MOST ONE article: the
 unreleased article with the lowest order number, and only if it is vetted. If that article is
-not vetted, nothing is released (a later vetted article does not jump the queue).
+not vetted, nothing is released (a later vetted article does not jump the queue). At most one
+article is released per calendar day (UTC), counted from releasedOn: a second run on a day that
+already has a release does nothing and says so.
 Releasing stamps `releasedOn` with today's date (UTC); that date is the only date ever shown
 publicly (page, metadata, sitemap). Unreleased articles show "Coming soon" and no date.
 The script only ever writes resources/*.html, _resources/manifest.json and sitemap.xml.
@@ -291,6 +293,10 @@ def build(root, today, dry_run):
         if a['releasedOn'] is not None and a['_released'] > today:
             raise BuildError(f'"{a["slug"]}" has releasedOn {a["releasedOn"]}, which is after today ({today}).')
     release, first = next_release(articles)
+    today_release = next((a for a in articles if a['_released'] == today), None)
+    if release is not None and today_release is not None:
+        # One release per calendar day (UTC), counted from releasedOn: a second run today does nothing.
+        release = None
     if release is not None:
         release['releasedOn'], release['_released'], release['status'] = today.isoformat(), today, 'published'
     outputs = {os.path.join(OUT_DIR, 'index.html'): index_page(articles), SITEMAP: sitemap(root, articles)}
@@ -308,7 +314,13 @@ def build(root, today, dry_run):
             if not dry_run:
                 with open(path, 'w', encoding='utf-8', newline='\n') as f:
                     f.write(text)
-    waiting = None if release or first is None else f'{first["slug"]} (order {first["order"]}, not vetted)'
+    if release or first is None:
+        waiting = None
+    elif first['vetted'] is not True:
+        waiting = f'{first["slug"]} (order {first["order"]}, not vetted)'
+    else:
+        waiting = (f'{first["slug"]} (order {first["order"]}, vetted) is held: an article was already released today '
+                   f'({today_release["slug"]}), limit is one per day (UTC)')
     return (release['slug'] if release else None), waiting, changed
 
 

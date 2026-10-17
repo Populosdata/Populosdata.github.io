@@ -6,7 +6,7 @@ Articles have no fixed release date. They go out in their planned `order` in `_r
 - `vetted` is `true`;
 - it is the lowest planned order number not yet released.
 
-If the next article in order is not vetted, nothing is released, even if a later article is vetted. The public date is the day of release, which the release stamps into `releasedOn`.
+If the next article in order is not vetted, nothing is released, even if a later article is vetted. At most one article is released per calendar day (UTC); a second run on the same day does nothing and says so in its log. The public date is the day of release, which the release stamps into `releasedOn`. To change the planned order, see `_docs/RESOURCES-HOWTO.md`.
 
 **Only El sets `vetted` to `true`.** Before doing that for an article, confirm the items below for it.
 

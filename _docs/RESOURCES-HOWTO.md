@@ -12,6 +12,16 @@
 ## When an article goes live
 Articles have no fixed dates. The workflow runs at 05:15 UTC on Tuesdays and Thursdays and releases **at most one** article per run: the unreleased article with the lowest `order`, and only if `vetted` is `true`. If that article is not vetted, nothing is released, and a later vetted article doesn't jump ahead. A date alone never releases anything. The workflow can also be run by hand from the Actions tab, with a **dry_run** option that changes nothing.
 
+**One release per day (UTC).** If an article already has today's date in `releasedOn`, any further run that day releases nothing. The log says which article is being held and why.
+
+## Changing the planned order
+Only the lowest-numbered unreleased article can ever be released, so the order decides what goes out next.
+1. Branch from `origin/main`.
+2. In `_resources/manifest.json`, change the `order` numbers of **unreleased** articles only (those with `"releasedOn": null`). Each number must be used once; the build fails on duplicates. Gaps are fine, because only the relative order matters.
+3. Don't renumber or edit articles that are already released. Their `order` no longer affects anything, and their `releasedOn` must stay as stamped.
+4. Run `python _tools/build_resources.py --dry-run` and check that the log names the article you expect as next in planned order.
+5. Commit only `_resources/manifest.json`, by explicit path, and open a PR for El to approve. Changing the order never releases anything by itself; release still needs `vetted: true` and a scheduled run.
+
 When it releases an article, the workflow:
 1. stamps `releasedOn` with that day's date (UTC), which is the only date ever shown publicly;
 2. writes `resources/<slug>.html`, with that date on the page and in its metadata;
