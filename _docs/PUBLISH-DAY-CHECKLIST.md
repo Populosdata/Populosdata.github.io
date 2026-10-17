@@ -13,17 +13,19 @@ Some lines were removed or replaced with neutral wording before merge. The origi
 
 | Article | What was neutralised |
 |---|---|
-| 03 | A computer-vision claim in "The Populos approach" |
-| 06 | Computer-vision claims (a section heading and two sentences) |
+| 02 | Example audience figures in "Reach: the unduplicated crowd" |
+| 03 | A computer-vision claim, the named rating factors, and the inline factor list |
+| 04 | Two modelling terms in the transit and vehicular sections; "capital cities" corrected to "major cities" |
+| 06 | Computer-vision claims (a section heading and two sentences), and the named rating factors |
 | 07 | A specific measurement-window length |
 | 08 | A reporting cadence, and a competitor-comparison sentence |
 | 09 | A description of how the rules are stored internally |
-| 10 | A computer-vision claim in "How Populos is governed" |
+| 10 | A computer-vision claim, and the description of how constants are stored (one section and one sentence) |
 
 ## Claims El confirms are true on the day of release
 - [ ] **01** "Populos is built to those same reference points." "Populos treats pedestrian traffic intensity, vehicular traffic intensity and the specific dynamics of transit points as first-class parts of the model."
 - [ ] **02** "In the Populos model these are not four independent counts but one coherent chain."
-- [ ] **03** "Populos scores every board on a single rating built from field-verified factors…"
+- [ ] **03** "Populos scores every board on a single rating built from a set of physical and positional factors, each verified in the field."
 - [ ] **04** "Populos models pedestrian traffic intensity and vehicular traffic intensity as distinct streams, each calibrated to Ghanaian data."
 - [ ] **05** "Populos builds its socio-economic classification from Ghana's own census microdata and living-standards surveys, calibrated against syndicated audience measures."
 - [ ] **06** "Populos rates every board on a single rating… each with transparent, defined scoring bands, versioned and signed off…" and "That single rating is applied once, never twice."
